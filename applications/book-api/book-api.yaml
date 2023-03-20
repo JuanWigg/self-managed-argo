@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: go-book-api
+  namespace: argocd      
+spec:
+  project: default
+  destination:
+    namespace: applications
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/JuanWigg/go-book-api
+    targetRevision: HEAD
+    path: kubernetes
+  syncPolicy:
+    automated:
+      prune: true # Specifies if resources should be pruned during auto-syncing ( false by default ).
+      selfHeal: true # Specifies if partial app sync should be executed when resources are changed only in target Kubernetes cluster and no git change detected ( false by default ).
+      allowEmpty: false # Allows deleting all application resources during automatic syncing ( false by default ).   
+    syncOptions:
+      - CreateNamespace=true
